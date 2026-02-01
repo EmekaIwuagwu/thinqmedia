@@ -6,13 +6,13 @@ import {
     ArrowLeft,
     Save,
     Image as ImageIcon,
-    Link as LinkIcon,
     Layout,
     Loader2
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { createPost } from "@/app/actions/blog";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 export default function NewPostPage() {
     const [title, setTitle] = useState("");
@@ -32,7 +32,7 @@ export default function NewPostPage() {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
-        formData.append("excerpt", excerpt || content.substring(0, 150) + "...");
+        formData.append("excerpt", excerpt || content.replace(/<[^>]*>/g, "").substring(0, 150) + "...");
         formData.append("category", category);
         formData.append("image", image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop");
 
@@ -104,15 +104,8 @@ export default function NewPostPage() {
                         <div className="h-px bg-gray-100 w-full" />
 
                         <div className="space-y-4">
-                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-2">Content</label>
-                            <div className="min-h-[400px] border-none focus:ring-0 w-full p-0">
-                                <textarea
-                                    placeholder="Start writing your strategy..."
-                                    className="w-full min-h-[400px] border-none focus:ring-0 text-lg text-gray-600 font-medium leading-relaxed resize-none p-0"
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                />
-                            </div>
+                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-2">Detailed Content</label>
+                            <RichTextEditor content={content} onChange={setContent} />
                         </div>
                     </div>
                 </div>
