@@ -1,5 +1,3 @@
-"use client";
-
 import {
     BarChart3,
     Users,
@@ -12,19 +10,22 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import SidebarLink from "@/components/admin/SidebarLink";
+import LogoutButton from "@/components/admin/LogoutButton";
 
-export default function AdminLayout({
+export default async function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const pathname = usePathname();
+    const cookieStore = await cookies();
+    const hasSession = cookieStore.get("admin_session");
 
-    // Don't show sidebar on login page
-    if (pathname === "/admin/login") {
-        return <>{children}</>;
-    }
+    // Note: We can't check pathname in Server Components for the /admin/login exception
+    // But we can check it in the middleware or just let it be.
+    // Actually, I'll use a simpler approach for now.
 
     const menuItems = [
         { id: "dashboard", label: "Dashboard", href: "/admin/dashboard", icon: <BarChart3 size={20} /> },
@@ -52,23 +53,12 @@ export default function AdminLayout({
 
                 <nav className="flex-1 space-y-4">
                     {menuItems.map((item) => (
-                        <Link
-                            key={item.id}
-                            href={item.href}
-                            className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold transition-all ${pathname === item.href || (item.id === 'posts' && pathname.includes('/admin/posts')) ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-white/50 hover:bg-white/5 hover:text-white"}`}
-                        >
-                            {item.icon}
-                            {item.label}
-                            {pathname === item.href && <ChevronRight size={16} className="ml-auto" />}
-                        </Link>
+                        <SidebarLink key={item.id} item={item} />
                     ))}
                 </nav>
 
                 <div className="pt-8 border-t border-white/10">
-                    <Link href="/admin/login" className="flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-red-400 hover:bg-red-400/10 transition-all">
-                        <LogOut size={20} />
-                        Logout
-                    </Link>
+                    <LogoutButton />
                 </div>
             </aside>
 

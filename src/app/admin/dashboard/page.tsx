@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
     Users,
     FileText,
@@ -10,23 +7,26 @@ import {
     Trash2,
     TrendingUp,
     Eye,
-    MessageSquare
+    MessageSquare,
+    BarChart3
 } from "lucide-react";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { getPosts } from "@/app/actions/blog";
+import AnimatedStats from "@/components/admin/AnimatedStats";
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+    const posts = await getPosts();
+    const visitorCount = await prisma.visitor.count();
+
     const stats = [
-        { label: "Total Visitors", value: "24,582", change: "+12.5%", icon: <Users className="text-blue-500" /> },
-        { label: "Blog Posts", value: "14", change: "+2 this month", icon: <FileText className="text-purple-500" /> },
-        { label: "Avg. Engagement", value: "4:20m", change: "+0:45s", icon: <TrendingUp className="text-green-500" /> },
-        { label: "Lead Inquiries", value: "128", change: "+18%", icon: <MessageSquare className="text-orange-500" /> },
+        { label: "Total Visitors", value: visitorCount.toLocaleString(), change: "+0%", icon: <Users className="text-blue-500" /> },
+        { label: "Blog Posts", value: posts.length.toString(), change: `+${posts.length}`, icon: <FileText className="text-purple-500" /> },
+        { label: "Avg. Engagement", value: "0:00m", change: "+0s", icon: <TrendingUp className="text-green-500" /> },
+        { label: "Lead Inquiries", value: "0", change: "+0%", icon: <MessageSquare className="text-orange-500" /> },
     ];
 
-    const recentPosts = [
-        { title: "How to Scale Your Ad Spend Without Losing ROI", date: "May 12, 2024", views: "1,240", status: "Published" },
-        { title: "The Shift to Performance-First Media Planning", date: "June 05, 2024", views: "892", status: "Published" },
-        { title: "Maximizing ROAS in the 2024 Digital Landscape", date: "June 20, 2024", views: "2,105", status: "Published" },
-    ];
+    const recentPosts = posts.slice(0, 5);
 
     return (
         <div>
@@ -41,28 +41,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                {stats.map((stat, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100"
-                    >
-                        <div className="flex justify-between items-start mb-6">
-                            <div className="w-12 h-12 rounded-2xl bg-[#f8faff] flex items-center justify-center">
-                                {stat.icon}
-                            </div>
-                            <span className={`text-xs font-black px-3 py-1 rounded-full ${stat.change.startsWith('+') ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
-                                {stat.change}
-                            </span>
-                        </div>
-                        <p className="text-gray-500 text-xs font-black uppercase tracking-widest mb-2">{stat.label}</p>
-                        <h3 className="text-3xl font-black text-accent">{stat.value}</h3>
-                    </motion.div>
-                ))}
-            </div>
+            <AnimatedStats stats={stats} />
 
             <div className="grid lg:grid-cols-3 gap-10">
                 {/* Recent Posts Table */}
@@ -84,25 +63,30 @@ export default function AdminDashboard() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {recentPosts.map((post, i) => (
-                                    <tr key={i} className="group hover:bg-[#f8faff]/50 transition-all font-medium">
-                                        <td className="px-8 py-6 font-black text-accent">{post.title}</td>
-                                        <td className="px-8 py-6 text-gray-400 text-sm">{post.date}</td>
-                                        <td className="px-8 py-6 text-gray-400 text-sm flex items-center gap-2">
-                                            <Eye size={14} className="text-primary" /> {post.views}
-                                        </td>
-                                        <td className="px-8 py-6 text-right">
-                                            <div className="flex justify-end gap-2">
-                                                <button className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
-                                                    <Edit size={18} />
-                                                </button>
-                                                <button className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all">
-                                                    <Trash2 size={18} />
-                                                </button>
-                                            </div>
-                                        </td>
+                                {recentPosts.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={4} className="px-8 py-10 text-center text-gray-400 font-bold">No posts yet.</td>
                                     </tr>
-                                ))}
+                                ) : (
+                                    recentPosts.map((post) => (
+                                        <tr key={post.id} className="group hover:bg-[#f8faff]/50 transition-all font-medium">
+                                            <td className="px-8 py-6 font-black text-accent">{post.title}</td>
+                                            <td className="px-8 py-6 text-gray-400 text-sm">
+                                                {new Date(post.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-8 py-6 text-gray-400 text-sm flex items-center gap-2">
+                                                <Eye size={14} className="text-primary" /> {post.views}
+                                            </td>
+                                            <td className="px-8 py-6 text-right">
+                                                <div className="flex justify-end gap-2">
+                                                    <button className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
+                                                        <Edit size={18} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

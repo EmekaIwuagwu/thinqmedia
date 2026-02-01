@@ -3,22 +3,36 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Lock, Mail, ArrowRight, ShieldCheck } from "lucide-react";
+import { Lock, Mail, ArrowRight, ShieldCheck, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { login } from "@/app/actions/auth";
 
 export default function AdminLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // This will be replaced with actual authentication
-        if (email === "admin@thinqmedia.com" && password === "admin123") {
-            router.push("/admin/dashboard");
-        } else {
-            alert("Invalid credentials. For demo use: admin@thinqmedia.com / admin123");
+        setError("");
+        setIsLoading(true);
+
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+
+        try {
+            const result = await login(formData);
+            if (result?.error) {
+                setError(result.error);
+            }
+        } catch (err) {
+            setError("Something went wrong. Please try again.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -63,7 +77,13 @@ export default function AdminLogin() {
                 </div>
 
                 <div className="glass p-10 md:p-16 rounded-[40px] border border-white/10 shadow-2xl">
-                    <form className="space-y-8" onSubmit={handleLogin}>
+                    <form className="space-y-8" onSubmit={handleSubmit}>
+                        {error && (
+                            <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-6 py-4 rounded-2xl text-sm font-bold animate-shake">
+                                {error}
+                            </div>
+                        )}
+
                         <div className="space-y-2">
                             <label className="text-xs font-black text-white/50 uppercase tracking-widest ml-4">Email Address</label>
                             <div className="relative">
@@ -75,6 +95,7 @@ export default function AdminLogin() {
                                     placeholder="admin@thinqmedia.com"
                                     className="w-full bg-white/5 border border-white/10 rounded-3xl px-16 py-5 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-white font-bold placeholder:text-white/20"
                                     required
+                                    disabled={isLoading}
                                 />
                             </div>
                         </div>
@@ -90,15 +111,21 @@ export default function AdminLogin() {
                                     placeholder="••••••••"
                                     className="w-full bg-white/5 border border-white/10 rounded-3xl px-16 py-5 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-white font-bold placeholder:text-white/20"
                                     required
+                                    disabled={isLoading}
                                 />
                             </div>
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full bg-primary text-white py-5 rounded-3xl font-black text-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-2xl shadow-primary/30"
+                            disabled={isLoading}
+                            className="w-full bg-primary text-white py-5 rounded-3xl font-black text-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-2xl shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Authorize Login <ArrowRight size={20} />
+                            {isLoading ? (
+                                <Loader2 className="animate-spin" size={20} />
+                            ) : (
+                                <>Authorize Login <ArrowRight size={20} /></>
+                            )}
                         </button>
                     </form>
 

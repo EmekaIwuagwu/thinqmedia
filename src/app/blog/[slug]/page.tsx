@@ -1,47 +1,24 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
-import { useParams } from "next/navigation";
+import { getPostBySlug } from "@/app/actions/blog";
+import { notFound } from "next/navigation";
 
-// This would normally come from a database based on the slug
-const blogPosts = [
-    {
-        title: "How to Scale Your Ad Spend Without Losing ROI",
-        excerpt: "Scaling campaigns is more than just increasing the budget. Learn the precision tactics we use to maintain performance at scale.",
-        content: `
-      <p>Scaling a digital advertising campaign is one of the most challenging tasks for any performance marketer. It's not as simple as just increasing your daily budget and watching the revenue grow. In fact, most businesses find that as they scale, their efficiency drops, and their ROAS (Return on Ad Spend) begins to plummet.</p>
-      
-      <h3>The Myth of Linear Scaling</h3>
-      <p>Many advertisers believe that if they spend $1,000 and get a 3x ROAS, spending $10,000 will net them the same return. Unfortunately, the digital advertising ecosystem doesn't work that way. As you increase budget, you move deeper into the audience pool, often reaching less qualified prospects or competing for higher-priced auctions.</p>
-      
-      <h3>1. Incremental Budget Increases</h3>
-      <p>Avoid doubling your budget overnight. We recommend the "20% Rule" — increasing your budget by no more than 20% every 48-72 hours. This gives the platform's algorithm (especially on Meta and Google) time to stabilize and optimize for the new spend level.</p>
-      
-      <h3>2. Creative Variation is Key</h3>
-      <p>When you spend more, your ads are seen more frequently. This leads to "Ad Fatigue" much faster. To combat this, you must have a pipeline of fresh creatives ready to be tested and deployed. A scaling campaign requires at least 3-5 distinct creative angles running simultaneously.</p>
-      
-      <h3>3. Audience Expansion</h3>
-      <p>Don't just spend more on your best-performing audience. Instead, find "Lookalike" audiences or broaden your targeting. Sometimes, "Broad" targeting (no interests) works best at high spend levels because it gives the AI more room to find converters.</p>
-    `,
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
-        author: "Strategy Lead",
-        date: "May 12, 2024",
-        category: "Media Buying",
-        slug: "scale-ad-spend-roi"
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+    const { slug } = await params;
+    const post = await getPostBySlug(slug);
+
+    if (!post) {
+        notFound();
     }
-];
 
-export default function BlogPost() {
-    const params = useParams();
-    const slug = params?.slug;
-
-    // Find post by slug or use the first one as a fallback for demo
-    const post = blogPosts.find(p => p.slug === slug) || blogPosts[0];
+    const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
 
     return (
         <main className="bg-white">
@@ -55,22 +32,18 @@ export default function BlogPost() {
                     </Link>
 
                     <div className="max-w-4xl">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                        >
+                        <div>
                             <span className="text-primary font-black uppercase tracking-[0.4em] text-xs mb-6 block">{post.category}</span>
                             <h1 className="text-5xl md:text-7xl font-black mb-10 leading-[1.1] text-accent">
                                 {post.title}
                             </h1>
 
                             <div className="flex flex-wrap items-center gap-8 text-sm font-bold text-gray-400 uppercase tracking-widest mb-12">
-                                <span className="flex items-center gap-2"><Calendar size={18} className="text-primary" /> {post.date}</span>
+                                <span className="flex items-center gap-2"><Calendar size={18} className="text-primary" /> {formattedDate}</span>
                                 <span className="flex items-center gap-2"><User size={18} className="text-primary" /> {post.author}</span>
                                 <span className="flex items-center gap-2"><Share2 size={18} className="text-primary" /> Share this strategy</span>
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -80,7 +53,7 @@ export default function BlogPost() {
                 <div className="container mx-auto">
                     <div className="relative aspect-[21/9] rounded-[60px] overflow-hidden shadow-2xl">
                         <Image
-                            src={post.image}
+                            src={post.image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"}
                             alt={post.title}
                             fill
                             className="object-cover"
@@ -94,7 +67,7 @@ export default function BlogPost() {
                 <div className="container mx-auto px-6">
                     <div className="max-w-3xl mx-auto">
                         <div
-                            className="prose prose-xl prose-primary font-medium text-gray-600 leading-relaxed"
+                            className="prose prose-xl prose-primary font-medium text-gray-600 leading-relaxed whitespace-pre-wrap"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
 
