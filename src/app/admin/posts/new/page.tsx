@@ -12,7 +12,12 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { createPost } from "@/app/actions/blog";
-import RichTextEditor from "@/components/admin/RichTextEditor";
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(() => import("@/components/admin/RichTextEditor"), {
+    ssr: false,
+    loading: () => <div className="h-[400px] w-full bg-gray-50 animate-pulse rounded-3xl" />
+});
 
 export default function NewPostPage() {
     const [title, setTitle] = useState("");

@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
     Settings,
     Shield,
@@ -8,11 +5,16 @@ import {
     Bell,
     Globe,
     Database,
-    ArrowRight,
     Save
 } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+    const admin = await prisma.admin.findFirst();
+    const adminName = admin?.name || "Strategist";
+    const adminEmail = admin?.email || "admin@thinqmedia.com";
+    const adminInitials = adminName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+
     return (
         <div>
             <div className="flex justify-between items-end mb-10">
@@ -30,9 +32,9 @@ export default function SettingsPage() {
                     {/* Profile Settings */}
                     <div className="bg-white rounded-[40px] p-10 shadow-sm border border-gray-100 flex flex-col items-center text-center">
                         <div className="w-24 h-24 rounded-[32px] bg-primary text-white flex items-center justify-center font-black text-3xl mb-6 shadow-xl shadow-primary/20">
-                            AS
+                            {adminInitials}
                         </div>
-                        <h3 className="text-2xl font-black text-accent mb-2">Admin Strategist</h3>
+                        <h3 className="text-2xl font-black text-accent mb-2">{adminName}</h3>
                         <p className="text-gray-400 font-bold text-sm uppercase tracking-widest mb-10">Super User Account</p>
 
                         <div className="w-full space-y-4 text-left">
@@ -40,14 +42,14 @@ export default function SettingsPage() {
                                 <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Full Name</label>
                                 <div className="relative">
                                     <User className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" size={20} />
-                                    <input type="text" value="Admin Strategist" className="w-full bg-[#f8faff] border border-gray-100 rounded-2xl px-16 py-4 font-bold text-accent outline-none" />
+                                    <input type="text" defaultValue={adminName} className="w-full bg-[#f8faff] border border-gray-100 rounded-2xl px-16 py-4 font-bold text-accent outline-none" />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Email Address</label>
                                 <div className="relative">
                                     <Globe className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" size={20} />
-                                    <input type="email" value="admin@thinqmedia.com" className="w-full bg-[#f8faff] border border-gray-100 rounded-2xl px-16 py-4 font-bold text-accent outline-none" />
+                                    <input type="email" defaultValue={adminEmail} className="w-full bg-[#f8faff] border border-gray-100 rounded-2xl px-16 py-4 font-bold text-accent outline-none" />
                                 </div>
                             </div>
                         </div>
@@ -64,7 +66,7 @@ export default function SettingsPage() {
                                     <p className="font-black text-accent">Two-Factor Authentication</p>
                                     <p className="text-xs text-gray-400 font-medium">Add an extra layer of security</p>
                                 </div>
-                                <div className="w-12 h-6 bg-gray-200 rounded-full relative">
+                                <div className="w-12 h-6 bg-gray-200 rounded-full relative cursor-pointer">
                                     <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all" />
                                 </div>
                             </div>
@@ -95,7 +97,7 @@ export default function SettingsPage() {
                                     <Database className="text-green-500" />
                                     <div>
                                         <p className="font-black text-green-700">PostgreSQL Status: Live</p>
-                                        <p className="text-xs text-green-600 font-medium text-opacity-80">Connected to thinqmedia_db</p>
+                                        <p className="text-xs text-green-600 font-medium text-opacity-80">Connected via Native Adapter</p>
                                     </div>
                                 </div>
                             </div>

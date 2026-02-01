@@ -1,6 +1,3 @@
-"use client"; // Note: This will be changed to "use server" if not for specific reasons, but I should use the correct directive.
-// Wait, Server Actions must have "use server" at the top.
-
 "use server";
 
 import { prisma } from "@/lib/prisma";
