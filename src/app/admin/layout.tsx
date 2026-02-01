@@ -24,10 +24,10 @@ export default async function AdminLayout({
     const cookieStore = await cookies();
     const session = cookieStore.get("admin_session");
 
-    // This is a safety check even with middleware
+    // If no session, they are on the login page (enforced by middleware)
+    // So we hide the sidebar and header.
     if (!session) {
-        // Note: We can't easily check pathname here to avoid loop on /admin/login 
-        // but the middleware handles the redirect.
+        return <main className="bg-accent min-h-screen">{children}</main>;
     }
 
     // Fetch real admin data
