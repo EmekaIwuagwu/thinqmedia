@@ -2,7 +2,14 @@
 
 import { motion } from "framer-motion";
 
-export default function AnimatedStats({ stats }: { stats: any[] }) {
+interface Stat {
+    label: string;
+    value: string;
+    change: string;
+    icon: React.ReactNode;
+}
+
+export default function AnimatedStats({ stats }: { stats: Stat[] }) {
     return (
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {stats.map((stat, i) => (

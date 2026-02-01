@@ -4,7 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 
-export default function SidebarLink({ item }: { item: any }) {
+interface MenuItem {
+    id: string;
+    label: string;
+    href: string;
+    icon: React.ReactNode;
+}
+
+export default function SidebarLink({ item }: { item: MenuItem }) {
     const pathname = usePathname();
     const isActive = pathname === item.href || (item.id === 'posts' && pathname.includes('/admin/posts'));
 
