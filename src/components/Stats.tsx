@@ -11,7 +11,7 @@ const stats = [
 
 export default function Stats() {
   return (
-    <section className="relative z-20 -mt-16 md:-mt-24 pb-12">
+    <section className="relative z-20 pb-12">
       <div className="container mx-auto px-6">
         <div className="glass grid grid-cols-2 md:grid-cols-4 gap-8 p-10 md:p-16 rounded-[40px] border border-white/40 shadow-xl overflow-hidden relative">
           {/* Subtle background glow */}

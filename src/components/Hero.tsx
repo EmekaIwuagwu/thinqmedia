@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
+    <section className="relative min-h-screen flex items-center pt-20 pb-20 overflow-hidden bg-white">
       {/* Dynamic Background Elements */}
       <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
       <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse" />
