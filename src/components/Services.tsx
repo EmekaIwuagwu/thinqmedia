@@ -17,8 +17,8 @@ const services = [
     color: "bg-red-500",
   },
   {
-    title: "Media Planning",
-    description: "Advanced channel allocation to ensure your budget is spent where it actually converts.",
+    title: "Media Planning & Buying",
+    description: "Strategic budget management, hands-on campaign execution, and continuous optimisation to ensure maximum performance and ROAS.",
     icon: <Target className="w-8 h-8" />,
     color: "bg-cyan-500",
   },

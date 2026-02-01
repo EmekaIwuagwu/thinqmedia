@@ -18,8 +18,40 @@ export default function Home() {
       <Hero />
       <Stats />
 
+      {/* NEW SECTION: Pain Point & Solution */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="glass p-12 md:p-20 rounded-[60px] border border-primary/10 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+              <div className="relative z-10 flex flex-col md:flex-row gap-12 items-center">
+                <div className="md:w-1/2">
+                  <h2 className="text-4xl md:text-5xl font-black text-accent mb-6 leading-tight">
+                    If Your Ads Are Spending but Not Converting, <span className="text-primary">You’re Not Alone</span>
+                  </h2>
+                </div>
+                <div className="md:w-1/2">
+                  <p className="text-xl text-gray-600 mb-8 leading-relaxed font-medium">
+                    Many businesses invest heavily in ads but struggle with poor ROAS, inconsistent leads, or unclear performance insights. The problem isn’t traffic — it’s strategy, execution, and optimisation.
+                  </p>
+                  <p className="text-xl text-gray-600 leading-relaxed font-medium">
+                    At Thinq Media, we don’t just plan campaigns. We actively manage, test, optimise, and scale media buying to ensure every naira works harder.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Why Us Section - Redesigned to link to About */}
-      <section className="section-padding bg-white overflow-hidden">
+      <section className="section-padding bg-[#f8faff] overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <motion.div
@@ -81,15 +113,51 @@ export default function Home() {
 
       <Services />
 
-      {/* Dynamic Results Summary Section */}
+      {/* NEW SECTION: Worked With / Clients */}
+      <section className="section-padding bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-20">
+            <span className="text-primary font-black uppercase tracking-[0.2em] text-sm mb-4 block">Proven Experience</span>
+            <h2 className="text-5xl md:text-7xl font-black text-accent mb-8">
+              Brands We’ve <br />
+              <span className="gradient-text">Scaled.</span>
+            </h2>
+            <p className="text-xl text-gray-500 max-w-3xl mx-auto font-medium">
+              With over 5+ years of hands-on media buying experience, we have managed performance campaigns across diverse industries including:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+            {[
+              "E-commerce", "Fintech", "Real Estate", "Edu-Tech", "Healthcare",
+              "Hospitality", "Automotive", "Retail", "SaaS", "Fashion"
+            ].map((industry, i) => (
+              <div key={i} className="p-8 rounded-3xl bg-[#f8faff] border border-gray-100 flex items-center justify-center text-center hover:shadow-xl hover:bg-white transition-all group">
+                <p className="text-lg font-black text-gray-400 group-hover:text-primary transition-colors">{industry}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-20 p-12 rounded-[40px] bg-accent text-white relative overflow-hidden text-center">
+            <div className="absolute top-0 left-0 w-full h-full bg-primary/10" />
+            <h3 className="text-3xl md:text-4xl font-black mb-4 relative z-10">5+ Years of Performance Marketing</h3>
+            <p className="text-xl text-white/70 relative z-10 font-bold">Deep expertise in local and international markets.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Updated Bottom CTA Section */}
       <section className="section-padding bg-[#f8faff]">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-6xl font-black mb-12">
-            Ready to See <span className="text-primary">30%</span> Growth?
+          <h2 className="text-4xl md:text-6xl font-black mb-8 text-accent">
+            Ready to Turn <span className="text-primary">Ad Spend</span> into Revenue?
           </h2>
+          <p className="text-xl text-gray-500 mb-12 max-w-2xl mx-auto font-medium">
+            Whether you’re struggling with performance or ready to scale, we’ll review your setup and identify clear growth opportunities.
+          </p>
           <div className="flex justify-center gap-6">
-            <Link href="/contact" className="btn-primary !px-12 !py-5 text-xl">
-              Get a Free Strategy Audit
+            <Link href="/contact" className="btn-primary !px-12 !py-5 text-xl shadow-2xl shadow-primary/40">
+              Book a Free Strategy Call
             </Link>
           </div>
         </div>

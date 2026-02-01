@@ -23,6 +23,7 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "Services", href: "/services" },
     { name: "About Us", href: "/about" },
+    { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -33,9 +34,9 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="ThinqMedia Logo"
-            width={160}
-            height={40}
-            className="w-auto h-10 object-contain"
+            width={140}
+            height={35}
+            className="w-auto h-8 object-contain"
             priority
           />
         </Link>

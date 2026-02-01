@@ -17,9 +17,9 @@ export default function Footer() {
               <Image
                 src="/logo.png"
                 alt="ThinqMedia"
-                width={160}
-                height={40}
-                className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+                width={140}
+                height={35}
+                className="h-8 w-auto object-contain transition-transform group-hover:scale-105"
               />
             </Link>
             <p className="text-gray-500 text-lg leading-relaxed mb-10 font-medium">
@@ -29,7 +29,7 @@ export default function Footer() {
               {[
                 { Icon: Facebook, href: "https://www.facebook.com/share/1BXSdQfxck/?mibextid=wwXIfr" },
                 { Icon: Twitter, href: "https://x.com/thinq_ads" },
-                { Icon: Instagram, href: "#" },
+                { Icon: Instagram, href: "https://www.instagram.com/thinq_ads/" },
                 { Icon: Linkedin, href: "https://www.linkedin.com/company/thinq-media/" }
               ].map(({ Icon, href }, i) => (
                 <Link
@@ -51,6 +51,7 @@ export default function Footer() {
                 { name: "Home", href: "/" },
                 { name: "Services", href: "/services" },
                 { name: "About Us", href: "/about" },
+                { name: "Blog", href: "/blog" },
                 { name: "Contact", href: "/contact" }
               ].map((link) => (
                 <li key={link.name}>
@@ -69,7 +70,7 @@ export default function Footer() {
               {[
                 "Paid Social Ads",
                 "Google Ads (SEM)",
-                "Media Planning",
+                "Media Planning & Buying",
                 "SEO Excellence",
                 "Web Development"
               ].map((item) => (

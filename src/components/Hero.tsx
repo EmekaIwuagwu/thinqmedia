@@ -25,21 +25,21 @@ export default function Hero() {
               <span>Transforming Media Presence</span>
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-black leading-[1.1] mb-8 text-accent">
-              Expert Media <br />
-              <span className="gradient-text">Solutions.</span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] mb-8 text-accent">
+              Performance-Driven <br />
+              <span className="gradient-text">Media Planning & Buying.</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-xl leading-relaxed">
-              Propel your brand to new heights with our expert solutions. We've helped businesses increase sales by up to <span className="text-primary font-bold">30%</span> through strategic ad management.
+            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-2xl leading-relaxed">
+              We help businesses turn ad spend into measurable revenue through strategic media planning, hands-on media buying, and continuous optimisation.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6">
-              <Link href="/contact" className="btn-primary !text-lg flex items-center justify-center gap-2 group">
-                Scale Your Business
+              <Link href="/contact" className="btn-primary !text-lg flex items-center justify-center gap-2 group shadow-xl hover:shadow-primary/30 transition-all">
+                Book a Free Media Audit
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/services" className="px-8 py-4 rounded-full border-2 border-primary/20 font-bold hover:border-primary/50 transition-all flex items-center justify-center">
+              <Link href="/services" className="px-8 py-4 rounded-full border-2 border-primary/20 font-bold hover:border-primary/50 transition-all flex items-center justify-center text-lg">
                 Explore Services
               </Link>
             </div>

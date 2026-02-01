@@ -31,7 +31,7 @@ const detailedServices = [
     },
     {
         title: "Media Planning & Buying",
-        description: "Maximize your budget efficiency. We strategically place your ads across the most effective channels, leveraging data-driven insights to ensure your brand reaches the right people at the right time.",
+        description: "Maximize your budget efficiency through strategic media placement. We don't just plan; we actively buy, manage, and optimise campaigns across the most effective channels to ensure peak performance and ROAS.",
         benefits: ["Budget Optimization", "Global Channel Reach", "Strategic Allocation"],
         icon: <Target size={32} />,
         color: "from-purple-500 to-purple-700"
