@@ -32,7 +32,7 @@ export async function createPost(formData: FormData) {
 
     revalidatePath("/blog");
     revalidatePath("/admin/posts");
-    redirect("/admin/posts");
+    return { success: true };
 }
 
 export async function getPosts() {
@@ -87,6 +87,6 @@ export async function updatePost(id: string, formData: FormData) {
 
     revalidatePath("/blog");
     revalidatePath("/admin/posts");
-    redirect("/admin/posts");
+    return { success: true };
 }
 

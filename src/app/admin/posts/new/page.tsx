@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { createPost } from "@/app/actions/blog";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const RichTextEditor = dynamic(() => import("@/components/admin/RichTextEditor"), {
     ssr: false,
@@ -26,6 +27,7 @@ export default function NewPostPage() {
     const [category, setCategory] = useState("Media Buying");
     const [image, setImage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const router = useRouter();
 
     const handleSubmit = async () => {
         if (!title || !content) {
@@ -42,11 +44,14 @@ export default function NewPostPage() {
         formData.append("image", image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop");
 
         try {
-            await createPost(formData);
+            const result = await createPost(formData);
+            if (result?.success) {
+                router.push("/admin/posts");
+                router.refresh();
+            }
         } catch (err) {
             console.error(err);
             alert("Failed to create post. Please try again.");
-        } finally {
             setIsSubmitting(false);
         }
     };

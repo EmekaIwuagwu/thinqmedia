@@ -66,11 +66,14 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         formData.append("image", image);
 
         try {
-            await updatePost(id, formData);
+            const result = await updatePost(id, formData);
+            if (result?.success) {
+                router.push("/admin/posts");
+                router.refresh();
+            }
         } catch (err) {
             console.error(err);
             alert("Failed to update post. Please try again.");
-        } finally {
             setIsSubmitting(false);
         }
     };
