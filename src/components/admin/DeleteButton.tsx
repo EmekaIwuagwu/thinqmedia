@@ -4,8 +4,11 @@ import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { deletePost } from "@/app/actions/blog";
 
+import { useRouter } from "next/navigation";
+
 export default function DeleteButton({ id }: { id: string }) {
     const [isDeleting, setIsDeleting] = useState(false);
+    const router = useRouter();
 
     const handleDelete = async () => {
         if (!confirm("Are you sure you want to delete this post?")) return;
@@ -13,6 +16,7 @@ export default function DeleteButton({ id }: { id: string }) {
         setIsDeleting(true);
         try {
             await deletePost(id);
+            router.refresh();
         } catch (err) {
             alert("Failed to delete post.");
         } finally {

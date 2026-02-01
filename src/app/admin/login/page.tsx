@@ -28,6 +28,10 @@ export default function AdminLogin() {
             const result = await login(formData);
             if (result?.error) {
                 setError(result.error);
+                setIsLoading(false);
+            } else if (result?.success) {
+                router.push("/admin/dashboard");
+                router.refresh(); // Refresh to ensure layout handles session change
             }
         } catch (err) {
             setError("Something went wrong. Please try again.");
