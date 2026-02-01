@@ -29,7 +29,7 @@ export default async function AdminDashboard() {
     const stats = [
         { label: "Total Visitors", value: visitorCount.toLocaleString(), change: `+${recentVisitors} today`, icon: <Users className="text-blue-500" /> },
         { label: "Blog Posts", value: posts.length.toString(), change: `Total: ${posts.length}`, icon: <FileText className="text-purple-500" /> },
-        { label: "Total Views", value: posts.reduce((acc, p) => acc + p.views, 0).toLocaleString(), change: "Live", icon: <TrendingUp className="text-green-500" /> },
+        { label: "Total Views", value: posts.reduce((acc: number, p) => acc + p.views, 0).toLocaleString(), change: "Live", icon: <TrendingUp className="text-green-500" /> },
         { label: "Lead Inquiries", value: "0", change: "+0%", icon: <MessageSquare className="text-orange-500" /> },
     ];
 
