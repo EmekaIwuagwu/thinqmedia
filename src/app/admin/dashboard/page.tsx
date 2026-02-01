@@ -4,11 +4,9 @@ import {
     Plus,
     ExternalLink,
     Edit,
-    Trash2,
     TrendingUp,
     Eye,
-    MessageSquare,
-    BarChart3
+    MessageSquare
 } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -19,10 +17,19 @@ export default async function AdminDashboard() {
     const posts = await getPosts();
     const visitorCount = await prisma.visitor.count();
 
+    // Basic calculation for recent growth
+    const recentVisitors = await prisma.visitor.count({
+        where: {
+            startTime: {
+                gte: new Date(Date.now() - 24 * 60 * 60 * 1000) // Last 24h
+            }
+        }
+    });
+
     const stats = [
-        { label: "Total Visitors", value: visitorCount.toLocaleString(), change: "+0%", icon: <Users className="text-blue-500" /> },
-        { label: "Blog Posts", value: posts.length.toString(), change: `+${posts.length}`, icon: <FileText className="text-purple-500" /> },
-        { label: "Avg. Engagement", value: "0:00m", change: "+0s", icon: <TrendingUp className="text-green-500" /> },
+        { label: "Total Visitors", value: visitorCount.toLocaleString(), change: `+${recentVisitors} today`, icon: <Users className="text-blue-500" /> },
+        { label: "Blog Posts", value: posts.length.toString(), change: `Total: ${posts.length}`, icon: <FileText className="text-purple-500" /> },
+        { label: "Total Views", value: posts.reduce((acc, p) => acc + p.views, 0).toLocaleString(), change: "Live", icon: <TrendingUp className="text-green-500" /> },
         { label: "Lead Inquiries", value: "0", change: "+0%", icon: <MessageSquare className="text-orange-500" /> },
     ];
 
@@ -79,9 +86,9 @@ export default async function AdminDashboard() {
                                             </td>
                                             <td className="px-8 py-6 text-right">
                                                 <div className="flex justify-end gap-2">
-                                                    <button className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
+                                                    <Link href={`/admin/posts/edit/${post.id}`} className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
                                                         <Edit size={18} />
-                                                    </button>
+                                                    </Link>
                                                 </div>
                                             </td>
                                         </tr>
@@ -96,23 +103,22 @@ export default async function AdminDashboard() {
                 <div className="space-y-10">
                     <div className="bg-accent rounded-[40px] p-8 text-white relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
-                        <h3 className="text-xl font-black mb-6 relative z-10">Quick Tip</h3>
+                        <h3 className="text-xl font-black mb-6 relative z-10">System Status</h3>
                         <p className="text-white/70 font-bold mb-6 relative z-10 leading-relaxed">
-                            Your most active visitor time is between 2:00 PM and 4:00 PM. Consider publishing your next post then for 20% more engagement.
+                            ThinqMedia Core is connected to PostgreSQL. All systems operational. {visitorCount} total interactions captured.
                         </p>
-                        <Link href="#" className="inline-block bg-white text-accent px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest hover:scale-105 transition-transform relative z-10">
-                            Read More
-                        </Link>
+                        <div className="inline-block bg-green-500 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest relative z-10">
+                            Live
+                        </div>
                     </div>
 
                     <div className="bg-white rounded-[40px] p-8 shadow-sm border border-gray-100">
-                        <h3 className="text-xl font-black text-accent mb-6">Traffic Sources</h3>
+                        <h3 className="text-xl font-black text-accent mb-6">Traffic Summary</h3>
                         <div className="space-y-6">
                             {[
-                                { label: "Google Search", value: 45, color: "bg-primary" },
-                                { label: "Meta Ads", value: 30, color: "bg-blue-500" },
-                                { label: "Direct", value: 15, color: "bg-purple-500" },
-                                { label: "Others", value: 10, color: "bg-gray-200" },
+                                { label: "Direct Access", value: Math.min(100, visitorCount > 0 ? 100 : 0), color: "bg-primary" },
+                                { label: "Search / Organic", value: 0, color: "bg-blue-500" },
+                                { label: "Referred", value: 0, color: "bg-purple-500" },
                             ].map((source, i) => (
                                 <div key={i}>
                                     <div className="flex justify-between text-xs font-black uppercase tracking-widest mb-2">

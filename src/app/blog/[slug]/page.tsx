@@ -5,9 +5,17 @@ import Link from "next/link";
 import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
 import { getPostBySlug } from "@/app/actions/blog";
 import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
     const { slug } = await params;
+
+    // Increment views
+    await prisma.post.update({
+        where: { slug },
+        data: { views: { increment: 1 } }
+    }).catch(() => { }); // Ignore error if update fails
+
     const post = await getPostBySlug(slug);
 
     if (!post) {

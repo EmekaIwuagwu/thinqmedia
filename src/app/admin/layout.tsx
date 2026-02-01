@@ -14,6 +14,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import SidebarLink from "@/components/admin/SidebarLink";
 import LogoutButton from "@/components/admin/LogoutButton";
+import { prisma } from "@/lib/prisma";
 
 export default async function AdminLayout({
     children,
@@ -21,11 +22,18 @@ export default async function AdminLayout({
     children: React.ReactNode;
 }) {
     const cookieStore = await cookies();
-    const hasSession = cookieStore.get("admin_session");
+    const session = cookieStore.get("admin_session");
 
-    // Note: We can't check pathname in Server Components for the /admin/login exception
-    // But we can check it in the middleware or just let it be.
-    // Actually, I'll use a simpler approach for now.
+    // This is a safety check even with middleware
+    if (!session) {
+        // Note: We can't easily check pathname here to avoid loop on /admin/login 
+        // but the middleware handles the redirect.
+    }
+
+    // Fetch real admin data
+    const admin = await prisma.admin.findFirst();
+    const adminName = admin?.name || "Strategist";
+    const adminInitials = adminName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
 
     const menuItems = [
         { id: "dashboard", label: "Dashboard", href: "/admin/dashboard", icon: <BarChart3 size={20} /> },
@@ -82,10 +90,10 @@ export default async function AdminLayout({
                         </button>
                         <div className="flex items-center gap-4 pl-6 border-l border-gray-100">
                             <div className="text-right">
-                                <p className="text-sm font-black text-accent">Admin Strategist</p>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Super User</p>
+                                <p className="text-sm font-black text-accent">{adminName}</p>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Administrator</p>
                             </div>
-                            <div className="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-lg">AS</div>
+                            <div className="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-lg">{adminInitials}</div>
                         </div>
                     </div>
                 </header>

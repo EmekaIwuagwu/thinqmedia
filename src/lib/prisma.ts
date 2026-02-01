@@ -4,7 +4,9 @@ import { Pool } from "pg";
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const DATABASE_URL = "postgresql://thinqmedia_user:1yj029mX9pdoX0SCA375QfcSI36inBlS@dpg-d5vfqgd6ubrc73cf1b70-a.oregon-postgres.render.com/thinqmedia?sslmode=require";
+
+const pool = new Pool({ connectionString: DATABASE_URL });
 const adapter = new PrismaPg(pool);
 
 export const prisma =
