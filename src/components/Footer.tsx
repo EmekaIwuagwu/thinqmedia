@@ -111,7 +111,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Our Studio</p>
-                  <p className="font-black text-accent leading-tight">Plot 12 Oba Kabiru St, Isolo, Lagos.</p>
+                  <p className="font-black text-accent leading-tight">15 New Life Baptist church street, Okeafa, Lagos State Nigeria</p>
                 </div>
               </div>
             </div>

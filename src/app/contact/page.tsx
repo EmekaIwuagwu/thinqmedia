@@ -125,7 +125,7 @@ export default function ContactPage() {
                                             </div>
                                             <div>
                                                 <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">Our Studio</p>
-                                                <p className="text-xl font-black text-accent leading-tight">Plot 12 Oba Kabiru St, Adelaja, Isolo, Lagos.</p>
+                                                <p className="text-xl font-black text-accent leading-tight">15 New Life Baptist church street, Okeafa, Lagos State Nigeria</p>
                                             </div>
                                         </div>
                                     </div>
