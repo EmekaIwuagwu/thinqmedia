@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import { Facebook, X, Instagram, Linkedin, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -28,7 +28,7 @@ export default function Footer() {
             <div className="flex gap-4">
               {[
                 { Icon: Facebook, href: "https://www.facebook.com/share/1BXSdQfxck/?mibextid=wwXIfr" },
-                { Icon: Twitter, href: "https://x.com/thinq_ads" },
+                { Icon: X, href: "https://x.com/thinq_ads" },
                 { Icon: Instagram, href: "https://www.instagram.com/thinq_ads/" },
                 { Icon: Linkedin, href: "https://www.linkedin.com/company/thinq-media/" }
               ].map(({ Icon, href }, i) => (
@@ -102,7 +102,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Call Anywhere</p>
-                  <p className="font-black text-accent">(+234) 816 608 4855</p>
+                  <p className="font-black text-accent">08113656033</p>
                 </div>
               </div>
               <div className="flex items-start gap-4 group">

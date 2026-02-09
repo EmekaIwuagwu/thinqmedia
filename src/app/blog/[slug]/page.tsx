@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
+import { Calendar, User, ArrowLeft, Share2, Facebook, X, Linkedin } from "lucide-react";
 import { getPostBySlug } from "@/app/actions/blog";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -89,7 +89,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                             </div>
 
                             <div className="flex gap-4">
-                                {[Facebook, Twitter, Linkedin].map((Icon, i) => (
+                                {[Facebook, X, Linkedin].map((Icon, i) => (
                                     <button key={i} className="w-12 h-12 rounded-2xl bg-[#f8faff] flex items-center justify-center text-gray-400 hover:text-primary hover:shadow-lg transition-all border border-gray-100">
                                         <Icon size={18} />
                                     </button>

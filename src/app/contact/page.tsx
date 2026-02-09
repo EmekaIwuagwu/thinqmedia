@@ -105,7 +105,7 @@ export default function ContactPage() {
                                             </div>
                                             <div>
                                                 <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">Call Us Anywhere</p>
-                                                <p className="text-xl font-black text-accent">(+234) 816 608 4855</p>
+                                                <p className="text-xl font-black text-accent">08113656033</p>
                                             </div>
                                         </div>
 
