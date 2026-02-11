@@ -30,8 +30,8 @@ export default async function RootLayout({
   const headerList = await headers();
   const pathname = headerList.get("x-invoke-path") || "/";
 
-  // We don't want to track admin pages as visitor traffic usually
-  if (!pathname.startsWith('/admin')) {
+  // We don't want to track admin pages or during build process
+  if (!pathname.startsWith('/admin') && !process.env.NEXT_BUILD) {
     await trackVisit(pathname);
   }
 

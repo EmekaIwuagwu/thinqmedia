@@ -10,11 +10,13 @@ import { prisma } from "@/lib/prisma";
 export default async function BlogPost({ params }: { params: { slug: string } }) {
     const { slug } = await params;
 
-    // Increment views
-    await prisma.post.update({
-        where: { slug },
-        data: { views: { increment: 1 } }
-    }).catch(() => { }); // Ignore error if update fails
+    // Increment views (skip during build)
+    if (!process.env.NEXT_BUILD) {
+        await prisma.post.update({
+            where: { slug },
+            data: { views: { increment: 1 } }
+        }).catch(() => { }); // Ignore error if update fails
+    }
 
     const post = await getPostBySlug(slug);
 

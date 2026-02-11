@@ -1,12 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
-const { PrismaPg } = require("@prisma/adapter-pg");
-const { Pool } = require("pg");
 
-const pool = new Pool({ connectionString: "postgresql://thinqmedia_user:1yj029mX9pdoX0SCA375QfcSI36inBlS@dpg-d5vfqgd6ubrc73cf1b70-a.oregon-postgres.render.com/thinqmedia?sslmode=require" });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 async function main() {
+    console.log("Seeding database...");
     const admin = await prisma.admin.upsert({
         where: { email: 'admin@thinqmedia.com' },
         update: {},

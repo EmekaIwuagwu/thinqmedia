@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
 }
 
 model Admin {
@@ -20,7 +20,7 @@ model Post {
   title     String
   slug      String   @unique
   excerpt   String
-  content   String   @db.Text
+  content   String
   image     String?
   category  String
   author    String
