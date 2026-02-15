@@ -4,8 +4,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
 }
+
+
+
+
+
+
 
 model Admin {
   id        String   @id @default(cuid())
