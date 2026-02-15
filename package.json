@@ -7,9 +7,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "cross-env PRISMA_CLIENT_ENGINE_TYPE=library npx prisma generate && cross-env NEXT_BUILD=true next build",
+    "build": "npx prisma generate && next build",
     "start": "next start",
-    "cpanel-start": "cross-env NODE_ENV=production PRISMA_CLIENT_ENGINE_TYPE=library node server.js",
+    "cpanel-start": "cross-env NODE_ENV=production node server.js",
     "lint": "eslint"
   },
   "dependencies": {
