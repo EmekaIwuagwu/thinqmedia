@@ -1,20 +1,14 @@
 generator client {
-  provider   = "prisma-client-js"
-  engineType = "library"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
+  url      = "mongodb+srv://devapply:devapply@cluster0.mpoa0sq.mongodb.net/thinqmedia?retryWrites=true&w=majority"
 }
 
-
-
-
-
-
-
 model Admin {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique
   password  String
   name      String?
@@ -23,7 +17,7 @@ model Admin {
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   slug      String   @unique
   excerpt   String
@@ -38,7 +32,7 @@ model Post {
 }
 
 model Visitor {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   ip        String
   location  String?
   device    String?

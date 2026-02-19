@@ -1,27 +1,27 @@
-const mysql = require('mysql2/promise');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient({
+    datasourceUrl: "mongodb+srv://devapply:devapply@cluster0.mpoa0sq.mongodb.net/thinqmedia?retryWrites=true&w=majority"
+});
 
 async function main() {
-    const connectionString = "mysql://thinqmed_root:thinqmedia12345678%2A%2A%2A%40%21@131.153.147.98:3306/thinqmed_thinqmedia_db";
+    console.log("Seeding MongoDB database using Prisma Client...");
 
-    console.log("Seeding database using mysql2 direct connection...");
-
-    let connection;
     try {
-        connection = await mysql.createConnection(connectionString);
-
-        // Use the database
-        await connection.query('USE thinqmed_thinqmedia_db');
-
         // Seed Admin
         console.log("Seeding Admin...");
-        const adminId = 'seed-admin-id';
-        const [admins] = await connection.query('SELECT * FROM Admin WHERE email = ?', ['admin@thinqmedia.com']);
+        const adminEmail = 'admin@thinqmedia.com';
+        const existingAdmin = await prisma.admin.findUnique({
+            where: { email: adminEmail }
+        });
 
-        if (admins.length === 0) {
-            await connection.query(
-                'INSERT INTO Admin (id, email, password, name, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())',
-                [adminId, 'admin@thinqmedia.com', 'admin123456', 'Admin Strategist']
-            );
+        if (!existingAdmin) {
+            await prisma.admin.create({
+                data: {
+                    email: adminEmail,
+                    password: 'admin123456',
+                    name: 'Admin Strategist'
+                }
+            });
             console.log("Admin seeded.");
         } else {
             console.log("Admin already exists.");
@@ -30,7 +30,6 @@ async function main() {
         // Seed Posts
         const posts = [
             {
-                id: 'post-1',
                 title: 'Welcome to ThinqMedia',
                 slug: 'welcome-to-thinqmedia',
                 excerpt: 'The future of digital media and strategy is here.',
@@ -41,7 +40,6 @@ async function main() {
                 status: 'Published'
             },
             {
-                id: 'post-2',
                 title: 'Digital Transformation in 2026',
                 slug: 'digital-transformation-2026',
                 excerpt: 'How businesses are evolving in the new era of technology.',
@@ -52,7 +50,6 @@ async function main() {
                 status: 'Published'
             },
             {
-                id: 'post-3',
                 title: 'The Power of Strategic Media',
                 slug: 'power-of-strategic-media',
                 excerpt: 'Why your business needs a strong media strategy.',
@@ -65,13 +62,15 @@ async function main() {
         ];
 
         for (const post of posts) {
-            const [existing] = await connection.query('SELECT * FROM Post WHERE slug = ?', [post.slug]);
-            if (existing.length === 0) {
+            const existingPost = await prisma.post.findUnique({
+                where: { slug: post.slug }
+            });
+
+            if (!existingPost) {
                 console.log(`Seeding post: ${post.title}`);
-                await connection.query(
-                    'INSERT INTO Post (id, title, slug, excerpt, content, image, category, author, status, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(), NOW())',
-                    [post.id, post.title, post.slug, post.excerpt, post.content, post.image, post.category, post.author, post.status]
-                );
+                await prisma.post.create({
+                    data: post
+                });
             } else {
                 console.log(`Post already exists: ${post.title}`);
             }
@@ -80,9 +79,12 @@ async function main() {
         console.log("Seed successful!");
     } catch (error) {
         console.error("Seed failed:", error);
+        if (error.message) console.error("Error Message:", error.message);
+        if (error.stack) console.error("Stack Trace:", error.stack);
     } finally {
-        if (connection) await connection.end();
+        await prisma.$disconnect();
     }
 }
 
 main();
+

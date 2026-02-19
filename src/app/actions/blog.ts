@@ -36,10 +36,12 @@ export async function createPost(formData: FormData) {
 }
 
 export async function getPosts() {
+    if (process.env.NEXT_BUILD) return [];
     return await prisma.post.findMany({
         orderBy: { createdAt: "desc" },
     });
 }
+
 
 export async function getPostById(id: string) {
     return await prisma.post.findUnique({
@@ -48,10 +50,12 @@ export async function getPostById(id: string) {
 }
 
 export async function getPostBySlug(slug: string) {
+    if (process.env.NEXT_BUILD) return null;
     return await prisma.post.findUnique({
         where: { slug },
     });
 }
+
 
 export async function deletePost(id: string) {
     await prisma.post.delete({

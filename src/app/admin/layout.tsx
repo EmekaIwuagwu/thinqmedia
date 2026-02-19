@@ -21,6 +21,10 @@ export default async function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
+    if (process.env.NEXT_BUILD) {
+        return <main className="bg-accent min-h-screen">{children}</main>;
+    }
+
     const cookieStore = await cookies();
     const session = cookieStore.get("admin_session");
 
@@ -34,6 +38,7 @@ export default async function AdminLayout({
     const admin = await prisma.admin.findFirst();
     const adminName = admin?.name || "Strategist";
     const adminInitials = adminName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+
 
     const menuItems = [
         { id: "dashboard", label: "Dashboard", href: "/admin/dashboard", icon: <BarChart3 size={20} /> },

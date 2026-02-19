@@ -2,12 +2,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
     return new PrismaClient({
-        datasources: {
-            db: {
-                url: "mysql://thinqmed_root:thinqmedia12345678%2A%2A%2A%40%21@131.153.147.98:3306/thinqmed_thinqmedia_db"
-            }
-        }
-    });
+        datasourceUrl: "mongodb+srv://devapply:devapply@cluster0.mpoa0sq.mongodb.net/thinqmedia?retryWrites=true&w=majority"
+    } as any);
 };
 
 declare global {
